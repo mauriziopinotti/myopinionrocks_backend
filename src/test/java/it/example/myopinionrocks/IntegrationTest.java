@@ -1,6 +1,5 @@
 package it.example.myopinionrocks;
 
-import it.example.myopinionrocks.MyopinionrocksApp;
 import it.example.myopinionrocks.config.AsyncSyncConfiguration;
 import it.example.myopinionrocks.config.EmbeddedSQL;
 import java.lang.annotation.ElementType;

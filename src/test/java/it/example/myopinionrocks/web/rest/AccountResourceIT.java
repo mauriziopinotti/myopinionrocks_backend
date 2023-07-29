@@ -14,7 +14,6 @@ import it.example.myopinionrocks.security.AuthoritiesConstants;
 import it.example.myopinionrocks.service.UserService;
 import it.example.myopinionrocks.service.dto.AdminUserDTO;
 import it.example.myopinionrocks.service.dto.PasswordChangeDTO;
-import it.example.myopinionrocks.service.dto.UserDTO;
 import it.example.myopinionrocks.web.rest.vm.KeyAndPasswordVM;
 import it.example.myopinionrocks.web.rest.vm.ManagedUserVM;
 import java.time.Instant;

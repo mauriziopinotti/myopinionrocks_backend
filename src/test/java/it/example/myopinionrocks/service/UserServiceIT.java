@@ -4,10 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 import it.example.myopinionrocks.IntegrationTest;
-import it.example.myopinionrocks.config.Constants;
 import it.example.myopinionrocks.domain.User;
 import it.example.myopinionrocks.repository.UserRepository;
-import it.example.myopinionrocks.service.dto.AdminUserDTO;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -20,8 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.auditing.AuditingHandler;
 import org.springframework.data.auditing.DateTimeProvider;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 import tech.jhipster.security.RandomUtil;
 
