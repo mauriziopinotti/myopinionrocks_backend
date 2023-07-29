@@ -1,13 +1,15 @@
 package it.example.myopinionrocks.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.NotNull;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A SurveyAnswer.
@@ -30,15 +32,19 @@ public class SurveyAnswer implements Serializable {
     private String title;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "surveyAnswers", "survey", "questions" }, allowSetters = true)
+    @JsonIgnore
+    @JsonIgnoreProperties(value = {"surveyAnswers", "survey", "questions"}, allowSetters = true)
     private SurveyQuestion question;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "surveyAnswer")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "surveyQuestion", "surveyAnswer", "user" }, allowSetters = true)
+    @JsonIgnoreProperties(value = {"surveyQuestion", "surveyAnswer", "user"}, allowSetters = true)
     private Set<SurveyResult> answers = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
+
+    @Transient
+    private Long resultCount;
 
     public Long getId() {
         return this.id;
@@ -111,6 +117,15 @@ public class SurveyAnswer implements Serializable {
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
+
+
+    public Long getResultCount() {
+        return resultCount;
+    }
+
+    public void setResultCount(Long resultCount) {
+        this.resultCount = resultCount;
+    }
 
     @Override
     public boolean equals(Object o) {

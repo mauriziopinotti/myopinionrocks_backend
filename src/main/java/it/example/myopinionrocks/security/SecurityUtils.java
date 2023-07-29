@@ -1,8 +1,7 @@
 package it.example.myopinionrocks.security;
 
-import java.util.Arrays;
-import java.util.Optional;
-import java.util.stream.Stream;
+import it.example.myopinionrocks.domain.User;
+import it.example.myopinionrocks.repository.UserRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
@@ -10,6 +9,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
 import org.springframework.security.oauth2.jwt.Jwt;
+
+import java.util.Arrays;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 /**
  * Utility class for Spring Security.
@@ -20,7 +23,8 @@ public final class SecurityUtils {
 
     public static final String AUTHORITIES_KEY = "auth";
 
-    private SecurityUtils() {}
+    private SecurityUtils() {
+    }
 
     /**
      * Get the login of the current user.
@@ -28,8 +32,16 @@ public final class SecurityUtils {
      * @return the login of the current user.
      */
     public static Optional<String> getCurrentUserLogin() {
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        return Optional.ofNullable(extractPrincipal(securityContext.getAuthentication()));
+        return Optional.ofNullable(extractPrincipal(SecurityContextHolder.getContext().getAuthentication()));
+    }
+
+    /**
+     * Get the current user.
+     *
+     * @return the current user.
+     */
+    public static Optional<User> getCurrentUserLogin(UserRepository userRepository) {
+        return getCurrentUserLogin().map(userRepository::findOneByLogin).orElse(null);
     }
 
     private static String extractPrincipal(Authentication authentication) {

@@ -1,16 +1,14 @@
 package it.example.myopinionrocks.web.rest;
 
+import it.example.myopinionrocks.domain.User;
 import it.example.myopinionrocks.repository.SurveyRepository;
+import it.example.myopinionrocks.repository.UserRepository;
+import it.example.myopinionrocks.security.SecurityUtils;
 import it.example.myopinionrocks.service.SurveyService;
 import it.example.myopinionrocks.service.dto.SurveyDTO;
 import it.example.myopinionrocks.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,6 +16,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
+
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 /**
  * REST controller for managing {@link it.example.myopinionrocks.domain.Survey}.
@@ -36,10 +40,13 @@ public class SurveyResource {
     private final SurveyService surveyService;
 
     private final SurveyRepository surveyRepository;
+    private final UserRepository userRepository;
 
-    public SurveyResource(SurveyService surveyService, SurveyRepository surveyRepository) {
+    public SurveyResource(SurveyService surveyService, SurveyRepository surveyRepository,
+                          UserRepository userRepository) {
         this.surveyService = surveyService;
         this.surveyRepository = surveyRepository;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -65,7 +72,7 @@ public class SurveyResource {
     /**
      * {@code PUT  /surveys/:id} : Updates an existing survey.
      *
-     * @param id the id of the surveyDTO to save.
+     * @param id        the id of the surveyDTO to save.
      * @param surveyDTO the surveyDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated surveyDTO,
      * or with status {@code 400 (Bad Request)} if the surveyDTO is not valid,
@@ -99,7 +106,7 @@ public class SurveyResource {
     /**
      * {@code PATCH  /surveys/:id} : Partial updates given fields of an existing survey, field will ignore if it is null
      *
-     * @param id the id of the surveyDTO to save.
+     * @param id        the id of the surveyDTO to save.
      * @param surveyDTO the surveyDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated surveyDTO,
      * or with status {@code 400 (Bad Request)} if the surveyDTO is not valid,
@@ -107,7 +114,7 @@ public class SurveyResource {
      * or with status {@code 500 (Internal Server Error)} if the surveyDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/surveys/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/surveys/{id}", consumes = {"application/json", "application/merge-patch+json"})
     public ResponseEntity<SurveyDTO> partialUpdateSurvey(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody SurveyDTO surveyDTO
@@ -170,5 +177,19 @@ public class SurveyResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * {@code GET  /user-survey} : get a random non-completed survey for give user, or just a random survey if the user
+     * is not logged in.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the survey in body.
+     */
+    @GetMapping("/user-survey")
+    public ResponseEntity<SurveyDTO> getUserSurvey() {
+        log.debug("REST request to get user Survey");
+        User loggedUser = SecurityUtils.getCurrentUserLogin(userRepository).orElse(null);
+        Optional<SurveyDTO> surveyDTO = surveyService.findOneForUser(loggedUser);
+        return ResponseUtil.wrapOrNotFound(surveyDTO);
     }
 }

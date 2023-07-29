@@ -1,6 +1,10 @@
 package it.example.myopinionrocks.service;
 
+import it.example.myopinionrocks.domain.User;
 import it.example.myopinionrocks.service.dto.SurveyResultDTO;
+import it.example.myopinionrocks.service.dto.SurveyResultSubmitDTO;
+import org.springframework.lang.Nullable;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -53,4 +57,6 @@ public interface SurveyResultService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+    void save(@Nullable User loggedUser, SurveyResultSubmitDTO surveyResultDTO);
 }

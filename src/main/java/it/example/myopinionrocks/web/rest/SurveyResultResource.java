@@ -1,16 +1,15 @@
 package it.example.myopinionrocks.web.rest;
 
+import it.example.myopinionrocks.domain.User;
 import it.example.myopinionrocks.repository.SurveyResultRepository;
+import it.example.myopinionrocks.repository.UserRepository;
+import it.example.myopinionrocks.security.SecurityUtils;
 import it.example.myopinionrocks.service.SurveyResultService;
 import it.example.myopinionrocks.service.dto.SurveyResultDTO;
+import it.example.myopinionrocks.service.dto.SurveyResultSubmitDTO;
 import it.example.myopinionrocks.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,6 +17,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
+
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 /**
  * REST controller for managing {@link it.example.myopinionrocks.domain.SurveyResult}.
@@ -29,6 +34,7 @@ public class SurveyResultResource {
     private final Logger log = LoggerFactory.getLogger(SurveyResultResource.class);
 
     private static final String ENTITY_NAME = "surveyResult";
+    private final UserRepository userRepository;
 
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
@@ -37,9 +43,10 @@ public class SurveyResultResource {
 
     private final SurveyResultRepository surveyResultRepository;
 
-    public SurveyResultResource(SurveyResultService surveyResultService, SurveyResultRepository surveyResultRepository) {
+    public SurveyResultResource(SurveyResultService surveyResultService, SurveyResultRepository surveyResultRepository, UserRepository userRepository) {
         this.surveyResultService = surveyResultService;
         this.surveyResultRepository = surveyResultRepository;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -66,7 +73,7 @@ public class SurveyResultResource {
     /**
      * {@code PUT  /survey-results/:id} : Updates an existing surveyResult.
      *
-     * @param id the id of the surveyResultDTO to save.
+     * @param id              the id of the surveyResultDTO to save.
      * @param surveyResultDTO the surveyResultDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated surveyResultDTO,
      * or with status {@code 400 (Bad Request)} if the surveyResultDTO is not valid,
@@ -100,7 +107,7 @@ public class SurveyResultResource {
     /**
      * {@code PATCH  /survey-results/:id} : Partial updates given fields of an existing surveyResult, field will ignore if it is null
      *
-     * @param id the id of the surveyResultDTO to save.
+     * @param id              the id of the surveyResultDTO to save.
      * @param surveyResultDTO the surveyResultDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated surveyResultDTO,
      * or with status {@code 400 (Bad Request)} if the surveyResultDTO is not valid,
@@ -108,7 +115,7 @@ public class SurveyResultResource {
      * or with status {@code 500 (Internal Server Error)} if the surveyResultDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/survey-results/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/survey-results/{id}", consumes = {"application/json", "application/merge-patch+json"})
     public ResponseEntity<SurveyResultDTO> partialUpdateSurveyResult(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody SurveyResultDTO surveyResultDTO
@@ -171,5 +178,19 @@ public class SurveyResultResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * {@code POST  /user-survey-result} : Create a new surveyResult.
+     *
+     * @param surveyResultDTO the surveyResultDTO to create.
+     */
+    @PostMapping("/user-survey-result")
+    public void createSurveyResultsFromSurvey(@Valid @RequestBody SurveyResultSubmitDTO surveyResultDTO)
+        throws URISyntaxException {
+        log.debug("REST request to save SurveyResult : {}", surveyResultDTO);
+        User loggedUser = SecurityUtils.getCurrentUserLogin(userRepository).orElse(null);
+        // FIXME: this REST method should insert a single result and return it, since REST protocol doesn't formally address bulk inserts
+        surveyResultService.save(loggedUser, surveyResultDTO);
     }
 }

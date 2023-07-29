@@ -3,8 +3,11 @@ package it.example.myopinionrocks.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.Instant;
+
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -17,6 +20,9 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class SurveyResult implements Serializable {
 
+    public static final String ENTITY_NAME = "survey-result";
+
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -29,11 +35,15 @@ public class SurveyResult implements Serializable {
     private Instant datetime;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "surveyAnswers", "survey", "questions" }, allowSetters = true)
+    @JsonIgnoreProperties(value = {"surveyQuestions"}, allowSetters = true)
+    private Survey survey;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(value = {"surveyAnswers", "survey", "questions"}, allowSetters = true)
     private SurveyQuestion surveyQuestion;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "question", "answers" }, allowSetters = true)
+    @JsonIgnoreProperties(value = {"question", "answers"}, allowSetters = true)
     private SurveyAnswer surveyAnswer;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -104,6 +114,14 @@ public class SurveyResult implements Serializable {
     public SurveyResult user(User user) {
         this.setUser(user);
         return this;
+    }
+
+    public Survey getSurvey() {
+        return survey;
+    }
+
+    public void setSurvey(Survey survey) {
+        this.survey = survey;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

@@ -1,5 +1,6 @@
 package it.example.myopinionrocks.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
@@ -35,6 +36,7 @@ public class SurveyQuestion implements Serializable {
     private Set<SurveyAnswer> surveyAnswers = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     @JsonIgnoreProperties(value = { "surveyQuestions" }, allowSetters = true)
     private Survey survey;
 

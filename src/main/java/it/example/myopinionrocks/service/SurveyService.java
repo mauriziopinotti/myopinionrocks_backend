@@ -1,6 +1,9 @@
 package it.example.myopinionrocks.service;
 
+import it.example.myopinionrocks.domain.User;
 import it.example.myopinionrocks.service.dto.SurveyDTO;
+import org.springframework.lang.Nullable;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -53,4 +56,6 @@ public interface SurveyService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+    Optional<SurveyDTO> findOneForUser(@Nullable User loggedUser);
 }
