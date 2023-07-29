@@ -1,0 +1,25 @@
+{
+  "applications": "*",
+  "changelogDate": "20230729091007",
+  "dto": "mapstruct",
+  "entityTableName": "survey",
+  "fields": [
+    {
+      "fieldName": "title",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "Survey",
+  "relationships": [
+    {
+      "otherEntityName": "surveyQuestion",
+      "otherEntityRelationshipName": "survey",
+      "relationshipName": "surveyQuestion",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

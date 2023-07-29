@@ -514,7 +514,6 @@
                     <version>${maven-eclipse-plugin.version}</version>
                     <configuration>
                         <downloadSources>true</downloadSources>
-                        <downloadJavadocs>true</downloadJavadocs>
                     </configuration>
                 </plugin>
                 <plugin>

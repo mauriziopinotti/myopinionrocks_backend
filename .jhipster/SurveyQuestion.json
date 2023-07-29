@@ -1,0 +1,37 @@
+{
+  "applications": "*",
+  "changelogDate": "20230729091008",
+  "dto": "mapstruct",
+  "entityTableName": "survey_question",
+  "fields": [
+    {
+      "fieldName": "title",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "SurveyQuestion",
+  "relationships": [
+    {
+      "otherEntityName": "surveyAnswer",
+      "otherEntityRelationshipName": "question",
+      "relationshipName": "surveyAnswer",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "survey",
+      "relationshipName": "survey",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "surveyResult",
+      "relationshipName": "question",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

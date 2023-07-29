@@ -1,0 +1,37 @@
+entity Survey {
+	title String required,
+}
+
+entity SurveyQuestion {
+	title String required,
+}
+
+entity SurveyAnswer {
+	title String required,
+}
+
+entity SurveyResult {
+    datetime Instant required,
+}
+
+relationship OneToMany {
+	Survey to SurveyQuestion{survey},
+    SurveyQuestion to SurveyAnswer{question},
+}
+
+relationship ManyToOne {
+    SurveyResult to Survey{survey}, // not needed but handy for queries
+    SurveyResult to SurveyQuestion{question},
+  	SurveyResult to SurveyAnswer{answer},
+    SurveyResult to User{user} with builtInEntity,
+}
+
+// Set pagination options
+// paginate JobHistory, Employee with infinite-scroll
+// paginate Job with pagination
+
+// Use Data Transfer Objects (DTO)
+dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl

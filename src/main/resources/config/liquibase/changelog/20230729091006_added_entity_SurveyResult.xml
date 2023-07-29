@@ -20,6 +20,9 @@
             <column name="user_id" type="bigint">
                 <constraints nullable="false" />
             </column>
+            <column name="survey_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
             <column name="survey_question_id" type="bigint">
                 <constraints nullable="false" />
             </column>

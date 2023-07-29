@@ -48,6 +48,14 @@ public class CacheConfiguration {
             createCache(cm, it.example.myopinionrocks.domain.User.class.getName());
             createCache(cm, it.example.myopinionrocks.domain.Authority.class.getName());
             createCache(cm, it.example.myopinionrocks.domain.User.class.getName() + ".authorities");
+            createCache(cm, it.example.myopinionrocks.domain.SurveyResult.class.getName());
+            createCache(cm, it.example.myopinionrocks.domain.Survey.class.getName());
+            createCache(cm, it.example.myopinionrocks.domain.Survey.class.getName() + ".surveyQuestions");
+            createCache(cm, it.example.myopinionrocks.domain.SurveyQuestion.class.getName());
+            createCache(cm, it.example.myopinionrocks.domain.SurveyQuestion.class.getName() + ".surveyAnswers");
+            createCache(cm, it.example.myopinionrocks.domain.SurveyQuestion.class.getName() + ".questions");
+            createCache(cm, it.example.myopinionrocks.domain.SurveyAnswer.class.getName());
+            createCache(cm, it.example.myopinionrocks.domain.SurveyAnswer.class.getName() + ".answers");
             // jhipster-needle-ehcache-add-entry
         };
     }
