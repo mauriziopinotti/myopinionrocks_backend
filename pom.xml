@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                              https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
@@ -67,6 +68,8 @@
         <sonar-maven-plugin.version>3.9.1.2184</sonar-maven-plugin.version>
         <spotless-maven-plugin.version>2.37.0</spotless-maven-plugin.version>
         <validation-api.version>3.0.2</validation-api.version>
+        <lombok.version>1.18.28</lombok.version>
+        <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
     </properties>
 
     <dependencyManagement>
@@ -265,6 +268,12 @@
             <groupId>org.testcontainers</groupId>
             <artifactId>mysql</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.28</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 
@@ -491,6 +500,16 @@
                                 <version>${spring-boot.version}</version>
                             </path>
                             <path>
+                                <groupId>org.projectlombok</groupId>
+                                <artifactId>lombok</artifactId>
+                                <version>${lombok.version}</version>
+                            </path>
+                            <path>
+                                <groupId>org.projectlombok</groupId>
+                                <artifactId>lombok-mapstruct-binding</artifactId>
+                                <version>${lombok-mapstruct-binding.version}</version>
+                            </path>
+                            <path>
                                 <groupId>org.mapstruct</groupId>
                                 <artifactId>mapstruct-processor</artifactId>
                                 <version>${mapstruct.version}</version>
@@ -543,11 +562,15 @@
                     <configuration>
                         <rules>
                             <requireMavenVersion>
-                                <message>You are running an older version of Maven. JHipster requires at least Maven ${maven.version}</message>
+                                <message>You are running an older version of Maven. JHipster requires at least Maven
+                                    ${maven.version}
+                                </message>
                                 <version>[${maven.version},)</version>
                             </requireMavenVersion>
                             <requireJavaVersion>
-                                <message>You are running an incompatible version of Java. JHipster supports JDK 17 to 19.</message>
+                                <message>You are running an incompatible version of Java. JHipster supports JDK 17 to
+                                    19.
+                                </message>
                                 <version>[17,18),[18,19),[19,20)</version>
                             </requireJavaVersion>
                         </rules>
@@ -754,13 +777,17 @@
                     <version>${liquibase.version}</version>
                     <configuration>
                         <changeLogFile>config/liquibase/master.xml</changeLogFile>
-                        <diffChangeLogFile>${project.basedir}/src/main/resources/config/liquibase/changelog/${maven.build.timestamp}_changelog.xml</diffChangeLogFile>
+                        <diffChangeLogFile>
+                            ${project.basedir}/src/main/resources/config/liquibase/changelog/${maven.build.timestamp}_changelog.xml
+                        </diffChangeLogFile>
                         <driver>com.mysql.cj.jdbc.Driver</driver>
                         <url>${liquibase-plugin.url}</url>
                         <defaultSchemaName>myopinionrocks</defaultSchemaName>
                         <username>myopinionrocks</username>
                         <password>RSkRn9m5Tyx</password>
-                        <referenceUrl>hibernate:spring:it.example.myopinionrocks.domain?dialect=org.hibernate.dialect.MySQL8Dialect&amp;hibernate.physical_naming_strategy=org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy&amp;hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy</referenceUrl>
+                        <referenceUrl>
+                            hibernate:spring:it.example.myopinionrocks.domain?dialect=org.hibernate.dialect.MySQL8Dialect&amp;hibernate.physical_naming_strategy=org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy&amp;hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+                        </referenceUrl>
                         <verbose>true</verbose>
                         <logging>debug</logging>
                         <contexts>!test</contexts>
@@ -785,6 +812,16 @@
                             <groupId>jakarta.validation</groupId>
                             <artifactId>jakarta.validation-api</artifactId>
                             <version>${validation-api.version}</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok-mapstruct-binding</artifactId>
+                            <version>${lombok-mapstruct-binding.version}</version>
                         </dependency>
                     </dependencies>
                 </plugin>
@@ -905,7 +942,8 @@
             <id>prod</id>
             <properties>
                 <!-- default Spring profiles -->
-                <spring.profiles.active>prod${profile.api-docs}${profile.tls}${profile.e2e}${profile.no-liquibase}</spring.profiles.active>
+                <spring.profiles.active>prod${profile.api-docs}${profile.tls}${profile.e2e}${profile.no-liquibase}
+                </spring.profiles.active>
                 <profile.test>testprod</profile.test>
                 <liquibase-plugin.url>jdbc:mysql://localhost:3306/myopinionrocks</liquibase-plugin.url>
                 <liquibase-plugin.username>root</liquibase-plugin.username>
