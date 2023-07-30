@@ -1,5 +1,6 @@
 package it.example.myopinionrocks.service.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -7,8 +8,6 @@ import lombok.ToString;
 
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * A DTO for the {@link it.example.myopinionrocks.domain.SurveyResult} entity.
@@ -24,12 +23,4 @@ public class SurveyResultDTO implements Serializable {
 
     @NotNull
     private Instant datetime;
-
-    private UserDTO user;
-
-    private SurveyDTO survey;
-
-    private Set<SurveyQuestionDTO> surveyQuestions = new HashSet<>();
-
-    private Set<SurveyAnswerDTO> surveyAnswers = new HashSet<>();
 }

@@ -15,8 +15,6 @@ import java.util.stream.Collectors;
  */
 @Mapper(componentModel = "spring")
 public interface SurveyResultMapper extends EntityMapper<SurveyResultDTO, SurveyResult> {
-    @Mapping(target = "user", source = "user", qualifiedByName = "userId")
-    @Mapping(target = "survey", source = "survey", qualifiedByName = "surveyId")
     SurveyResultDTO toDto(SurveyResult s);
 
     SurveyResult toEntity(SurveyResultDTO surveyResultDTO);
