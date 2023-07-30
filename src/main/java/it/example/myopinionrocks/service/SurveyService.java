@@ -2,10 +2,13 @@ package it.example.myopinionrocks.service;
 
 import it.example.myopinionrocks.domain.User;
 import it.example.myopinionrocks.service.dto.SurveyDTO;
-import org.springframework.lang.Nullable;
 
 import java.util.List;
 import java.util.Optional;
+
+import jakarta.annotation.Nullable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 /**
  * Service Interface for managing {@link it.example.myopinionrocks.domain.Survey}.
@@ -41,6 +44,14 @@ public interface SurveyService {
      * @return the list of entities.
      */
     List<SurveyDTO> findAll();
+
+    /**
+     * Get all the surveys with eager load of many-to-many relationships.
+     *
+     * @param pageable the pagination information.
+     * @return the list of entities.
+     */
+    Page<SurveyDTO> findAllWithEagerRelationships(Pageable pageable);
 
     /**
      * Get the "id" survey.

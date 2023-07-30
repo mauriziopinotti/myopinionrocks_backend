@@ -17,19 +17,19 @@
       "otherEntityRelationshipName": "question",
       "relationshipName": "surveyAnswer",
       "relationshipSide": "left",
-      "relationshipType": "one-to-many"
+      "relationshipType": "many-to-many"
     },
     {
       "otherEntityName": "survey",
       "relationshipName": "survey",
       "relationshipSide": "right",
-      "relationshipType": "many-to-one"
+      "relationshipType": "many-to-many"
     },
     {
       "otherEntityName": "surveyResult",
       "relationshipName": "question",
       "relationshipSide": "right",
-      "relationshipType": "one-to-many"
+      "relationshipType": "many-to-many"
     }
   ],
   "searchEngine": "no",

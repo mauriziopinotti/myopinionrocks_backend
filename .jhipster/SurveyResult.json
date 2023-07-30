@@ -13,26 +13,33 @@
   "name": "SurveyResult",
   "relationships": [
     {
-      "otherEntityName": "surveyQuestion",
-      "otherEntityRelationshipName": "question",
-      "relationshipName": "surveyQuestion",
-      "relationshipSide": "left",
-      "relationshipType": "many-to-one"
-    },
-    {
-      "otherEntityName": "surveyAnswer",
-      "otherEntityRelationshipName": "answer",
-      "relationshipName": "surveyAnswer",
-      "relationshipSide": "left",
-      "relationshipType": "many-to-one"
-    },
-    {
       "otherEntityName": "user",
       "otherEntityRelationshipName": "user",
       "relationshipName": "user",
       "relationshipSide": "left",
       "relationshipType": "many-to-one",
       "relationshipWithBuiltInEntity": true
+    },
+    {
+      "otherEntityName": "survey",
+      "otherEntityRelationshipName": "survey",
+      "relationshipName": "survey",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "surveyQuestion",
+      "otherEntityRelationshipName": "question",
+      "relationshipName": "surveyQuestion",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-many"
+    },
+    {
+      "otherEntityName": "surveyAnswer",
+      "otherEntityRelationshipName": "answer",
+      "relationshipName": "surveyAnswer",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-many"
     }
   ],
   "searchEngine": "no",

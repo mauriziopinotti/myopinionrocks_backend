@@ -142,10 +142,11 @@ public class SurveyResource {
     /**
      * {@code GET  /surveys} : get all the surveys.
      *
+     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of surveys in body.
      */
     @GetMapping("/surveys")
-    public List<SurveyDTO> getAllSurveys() {
+    public List<SurveyDTO> getAllSurveys(@RequestParam(required = false, defaultValue = "false") boolean eagerload) {
         log.debug("REST request to get all Surveys");
         return surveyService.findAll();
     }

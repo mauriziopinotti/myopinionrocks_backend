@@ -8,32 +8,46 @@
     -->
     <changeSet id="20230729091006-2" author="jhipster">
 
-        <addForeignKeyConstraint baseColumnNames="survey_id"
-                                 baseTableName="survey_result"
-                                 constraintName="fk_survey_result__survey_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="survey"
-        />
-
-        <addForeignKeyConstraint baseColumnNames="survey_question_id"
-                                 baseTableName="survey_result"
-                                 constraintName="fk_survey_result__survey_question_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="survey_question"
-                                 />
-
-        <addForeignKeyConstraint baseColumnNames="survey_answer_id"
-                                 baseTableName="survey_result"
-                                 constraintName="fk_survey_result__survey_answer_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="survey_answer"
-                                 />
-
         <addForeignKeyConstraint baseColumnNames="user_id"
                                  baseTableName="survey_result"
                                  constraintName="fk_survey_result__user_id"
                                  referencedColumnNames="id"
                                  referencedTableName="jhi_user"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="survey_id"
+                                 baseTableName="survey_result"
+                                 constraintName="fk_survey_result__survey_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="survey"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="survey_result_id"
+                                 baseTableName="rel_survey_result__survey_question_answer"
+                                 constraintName="fk_rel_survey_result__survey_question__survey_result_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="survey_result"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="survey_question_id"
+                                 baseTableName="rel_survey_result__survey_question_answer"
+                                 constraintName="fk_rel_survey_result__survey_question__survey_question_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="survey_question"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="survey_result_id"
+                                 baseTableName="rel_survey_result__survey_question_answer"
+                                 constraintName="fk_rel_survey_result__survey_answer__survey_result_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="survey_result"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="survey_answer_id"
+                                 baseTableName="rel_survey_result__survey_question_answer"
+                                 constraintName="fk_rel_survey_result__survey_answer__survey_answer_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="survey_answer"
                                  />
     </changeSet>
 </databaseChangeLog>

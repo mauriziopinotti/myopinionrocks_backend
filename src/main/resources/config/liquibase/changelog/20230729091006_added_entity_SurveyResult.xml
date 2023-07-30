@@ -6,9 +6,6 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
-    <property name="now" value="now()" dbms="h2"/>
-    <property name="now" value="now()" dbms="mysql"/>
-
     <!--
         Added the entity SurveyResult.
     -->
@@ -17,23 +14,43 @@
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
+            <column name="datetime" type="${datetimeType}">
+                <constraints nullable="false" />
+            </column>
             <column name="user_id" type="bigint">
                 <constraints nullable="true" />
             </column>
             <column name="survey_id" type="bigint">
-                <constraints nullable="false" />
-            </column>
-            <column name="survey_question_id" type="bigint">
-                <constraints nullable="false" />
-            </column>
-            <column name="survey_answer_id" type="bigint">
-                <constraints nullable="false" />
-            </column>
-            <column name="datetime" type="timestamp" defaultValueDate="${now}">
-                <constraints nullable="false" />
+                <constraints nullable="true" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
+        <dropDefaultValue tableName="survey_result" columnName="datetime" columnDataType="${datetimeType}"/>
+    </changeSet>
+
+    <changeSet id="20230729091006-1-relations" author="jhipster">
+
+        <createTable tableName="rel_survey_result__survey_question">
+            <column name="survey_question_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="survey_result_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="survey_result_id, survey_question_id" tableName="rel_survey_result__survey_question"/>
+
+        <createTable tableName="rel_survey_result__survey_answer">
+            <column name="survey_answer_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="survey_result_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="survey_result_id, survey_answer_id" tableName="rel_survey_result__survey_answer"/>
     </changeSet>
 
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
@@ -46,15 +63,15 @@
           This can be customized by adding or removing 'faker' in the 'spring.liquibase.contexts'
           Spring Boot configuration key.
     -->
-<!--    <changeSet id="20230729091006-1-data" author="jhipster" context="faker">-->
-<!--        <loadData-->
-<!--                  file="config/liquibase/fake-data/survey_result.csv"-->
-<!--                  separator=";"-->
-<!--                  tableName="survey_result"-->
-<!--                  usePreparedStatements="true">-->
-<!--            <column name="id" type="numeric"/>-->
-<!--            <column name="datetime" type="date"/>-->
-<!--            &lt;!&ndash; jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here &ndash;&gt;-->
-<!--        </loadData>-->
-<!--    </changeSet>-->
+    <changeSet id="20230729091006-1-data" author="jhipster" context="faker">
+        <loadData
+                  file="config/liquibase/fake-data/survey_result.csv"
+                  separator=";"
+                  tableName="survey_result"
+                  usePreparedStatements="true">
+            <column name="id" type="numeric"/>
+            <column name="datetime" type="date"/>
+            <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
+        </loadData>
+    </changeSet>
 </databaseChangeLog>

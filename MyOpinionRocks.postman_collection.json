@@ -141,7 +141,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"surveyId\": 1,\n    \"surveyAnswers\": {\n        \"1\": 2,\n        \"2\": 6,\n        \"3\": 10\n    }\n}"
+					"raw": "{\n    \"surveyId\": 1,\n    \"surveyAnswers\": {\n        \"1\": 2,\n        \"2\": 3,\n        \"3\": 7\n    }\n}"
 				},
 				"url": {
 					"raw": "{{BASE_URL}}/api/user-survey-result",

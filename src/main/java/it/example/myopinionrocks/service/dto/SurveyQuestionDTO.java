@@ -1,14 +1,14 @@
 package it.example.myopinionrocks.service.dto;
 
-import it.example.myopinionrocks.domain.SurveyAnswer;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A DTO for the {@link it.example.myopinionrocks.domain.SurveyQuestion} entity.
@@ -25,5 +25,5 @@ public class SurveyQuestionDTO implements Serializable {
     @NotNull
     private String title;
 
-    private List<SurveyAnswerDTO> surveyAnswers;
+    private Set<SurveyAnswerDTO> surveyAnswers = new HashSet<>();
 }

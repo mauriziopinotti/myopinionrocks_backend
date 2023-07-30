@@ -17,6 +17,12 @@
       "otherEntityRelationshipName": "survey",
       "relationshipName": "surveyQuestion",
       "relationshipSide": "left",
+      "relationshipType": "many-to-many"
+    },
+    {
+      "otherEntityName": "surveyResult",
+      "relationshipName": "survey",
+      "relationshipSide": "right",
       "relationshipType": "one-to-many"
     }
   ],

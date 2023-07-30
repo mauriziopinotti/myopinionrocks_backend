@@ -6,7 +6,10 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * A DTO for the {@link it.example.myopinionrocks.domain.Survey} entity.
@@ -23,5 +26,7 @@ public class SurveyDTO implements Serializable {
     @NotNull
     private String title;
 
-    private List<SurveyQuestionDTO> surveyQuestions;
+    private Set<SurveyQuestionDTO> surveyQuestions = new HashSet<>();
+
+    private Map<Long, Map<Long, Long>> previousSubmissionsCount = new HashMap<>();
 }

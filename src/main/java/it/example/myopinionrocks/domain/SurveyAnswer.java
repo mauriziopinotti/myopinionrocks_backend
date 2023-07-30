@@ -1,15 +1,11 @@
 package it.example.myopinionrocks.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * A SurveyAnswer.
@@ -31,20 +27,7 @@ public class SurveyAnswer implements Serializable {
     @Column(name = "title", nullable = false)
     private String title;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnore
-    @JsonIgnoreProperties(value = {"surveyAnswers", "survey", "questions"}, allowSetters = true)
-    private SurveyQuestion question;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "surveyAnswer")
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = {"surveyQuestion", "surveyAnswer", "user"}, allowSetters = true)
-    private Set<SurveyResult> answers = new HashSet<>();
-
     // jhipster-needle-entity-add-field - JHipster will add fields here
-
-    @Transient
-    private Long resultCount;
 
     public Long getId() {
         return this.id;
@@ -72,60 +55,8 @@ public class SurveyAnswer implements Serializable {
         this.title = title;
     }
 
-    public SurveyQuestion getQuestion() {
-        return this.question;
-    }
-
-    public void setQuestion(SurveyQuestion surveyQuestion) {
-        this.question = surveyQuestion;
-    }
-
-    public SurveyAnswer question(SurveyQuestion surveyQuestion) {
-        this.setQuestion(surveyQuestion);
-        return this;
-    }
-
-    public Set<SurveyResult> getAnswers() {
-        return this.answers;
-    }
-
-    public void setAnswers(Set<SurveyResult> surveyResults) {
-        if (this.answers != null) {
-            this.answers.forEach(i -> i.setSurveyAnswer(null));
-        }
-        if (surveyResults != null) {
-            surveyResults.forEach(i -> i.setSurveyAnswer(this));
-        }
-        this.answers = surveyResults;
-    }
-
-    public SurveyAnswer answers(Set<SurveyResult> surveyResults) {
-        this.setAnswers(surveyResults);
-        return this;
-    }
-
-    public SurveyAnswer addAnswer(SurveyResult surveyResult) {
-        this.answers.add(surveyResult);
-        surveyResult.setSurveyAnswer(this);
-        return this;
-    }
-
-    public SurveyAnswer removeAnswer(SurveyResult surveyResult) {
-        this.answers.remove(surveyResult);
-        surveyResult.setSurveyAnswer(null);
-        return this;
-    }
-
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
-
-    public Long getResultCount() {
-        return resultCount;
-    }
-
-    public void setResultCount(Long resultCount) {
-        this.resultCount = resultCount;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -148,8 +79,8 @@ public class SurveyAnswer implements Serializable {
     @Override
     public String toString() {
         return "SurveyAnswer{" +
-            "id=" + getId() +
-            ", title='" + getTitle() + "'" +
-            "}";
+                "id=" + getId() +
+                ", title='" + getTitle() + "'" +
+                "}";
     }
 }

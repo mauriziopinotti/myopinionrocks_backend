@@ -143,10 +143,11 @@ public class SurveyResultResource {
     /**
      * {@code GET  /survey-results} : get all the surveyResults.
      *
+     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of surveyResults in body.
      */
     @GetMapping("/survey-results")
-    public List<SurveyResultDTO> getAllSurveyResults() {
+    public List<SurveyResultDTO> getAllSurveyResults(@RequestParam(required = false, defaultValue = "false") boolean eagerload) {
         log.debug("REST request to get all SurveyResults");
         return surveyResultService.findAll();
     }
@@ -186,11 +187,14 @@ public class SurveyResultResource {
      * @param surveyResultDTO the surveyResultDTO to create.
      */
     @PostMapping("/user-survey-result")
-    public void createSurveyResultsFromSurvey(@Valid @RequestBody SurveyResultSubmitDTO surveyResultDTO)
+    public ResponseEntity<SurveyResultDTO> createSurveyResultsForUser(@Valid @RequestBody SurveyResultSubmitDTO surveyResultDTO)
         throws URISyntaxException {
         log.debug("REST request to save SurveyResult : {}", surveyResultDTO);
         User loggedUser = SecurityUtils.getCurrentUserLogin(userRepository).orElse(null);
-        // FIXME: this REST method should insert a single result and return it, since REST protocol doesn't formally address bulk inserts
-        surveyResultService.save(loggedUser, surveyResultDTO);
+        SurveyResultDTO result = surveyResultService.save(loggedUser, surveyResultDTO);
+        return ResponseEntity
+            .created(new URI("/api/user-survey-result/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            .body(result);
     }
 }

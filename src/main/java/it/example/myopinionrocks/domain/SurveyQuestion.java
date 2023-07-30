@@ -1,12 +1,13 @@
 package it.example.myopinionrocks.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -30,20 +31,20 @@ public class SurveyQuestion implements Serializable {
     @Column(name = "title", nullable = false)
     private String title;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "question")
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "rel_survey_question__survey_answer",
+            joinColumns = @JoinColumn(name = "survey_question_id"),
+            inverseJoinColumns = @JoinColumn(name = "survey_answer_id")
+    )
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "question", "answers" }, allowSetters = true)
+    @JsonIgnoreProperties(value = {"questions", "answers"}, allowSetters = true)
     private Set<SurveyAnswer> surveyAnswers = new HashSet<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnore
-    @JsonIgnoreProperties(value = { "surveyQuestions" }, allowSetters = true)
-    private Survey survey;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "surveyQuestion")
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "surveyQuestions")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "surveyQuestion", "surveyAnswer", "user" }, allowSetters = true)
-    private Set<SurveyResult> questions = new HashSet<>();
+    @JsonIgnoreProperties(value = {"surveyQuestions", "surveys"}, allowSetters = true)
+    private Set<Survey> surveys = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -78,12 +79,6 @@ public class SurveyQuestion implements Serializable {
     }
 
     public void setSurveyAnswers(Set<SurveyAnswer> surveyAnswers) {
-        if (this.surveyAnswers != null) {
-            this.surveyAnswers.forEach(i -> i.setQuestion(null));
-        }
-        if (surveyAnswers != null) {
-            surveyAnswers.forEach(i -> i.setQuestion(this));
-        }
         this.surveyAnswers = surveyAnswers;
     }
 
@@ -92,59 +87,34 @@ public class SurveyQuestion implements Serializable {
         return this;
     }
 
-    public SurveyQuestion addSurveyAnswer(SurveyAnswer surveyAnswer) {
-        this.surveyAnswers.add(surveyAnswer);
-        surveyAnswer.setQuestion(this);
-        return this;
+    public Set<Survey> getSurveys() {
+        return this.surveys;
     }
 
-    public SurveyQuestion removeSurveyAnswer(SurveyAnswer surveyAnswer) {
-        this.surveyAnswers.remove(surveyAnswer);
-        surveyAnswer.setQuestion(null);
-        return this;
-    }
-
-    public Survey getSurvey() {
-        return this.survey;
-    }
-
-    public void setSurvey(Survey survey) {
-        this.survey = survey;
-    }
-
-    public SurveyQuestion survey(Survey survey) {
-        this.setSurvey(survey);
-        return this;
-    }
-
-    public Set<SurveyResult> getQuestions() {
-        return this.questions;
-    }
-
-    public void setQuestions(Set<SurveyResult> surveyResults) {
-        if (this.questions != null) {
-            this.questions.forEach(i -> i.setSurveyQuestion(null));
+    public void setSurveys(Set<Survey> surveys) {
+        if (this.surveys != null) {
+            this.surveys.forEach(i -> i.removeSurveyQuestion(this));
         }
-        if (surveyResults != null) {
-            surveyResults.forEach(i -> i.setSurveyQuestion(this));
+        if (surveys != null) {
+            surveys.forEach(i -> i.addSurveyQuestion(this));
         }
-        this.questions = surveyResults;
+        this.surveys = surveys;
     }
 
-    public SurveyQuestion questions(Set<SurveyResult> surveyResults) {
-        this.setQuestions(surveyResults);
+    public SurveyQuestion surveys(Set<Survey> surveys) {
+        this.setSurveys(surveys);
         return this;
     }
 
-    public SurveyQuestion addQuestion(SurveyResult surveyResult) {
-        this.questions.add(surveyResult);
-        surveyResult.setSurveyQuestion(this);
+    public SurveyQuestion addSurvey(Survey survey) {
+        this.surveys.add(survey);
+        survey.getSurveyQuestions().add(this);
         return this;
     }
 
-    public SurveyQuestion removeQuestion(SurveyResult surveyResult) {
-        this.questions.remove(surveyResult);
-        surveyResult.setSurveyQuestion(null);
+    public SurveyQuestion removeSurvey(Survey survey) {
+        this.surveys.remove(survey);
+        survey.getSurveyQuestions().remove(this);
         return this;
     }
 
@@ -171,8 +141,8 @@ public class SurveyQuestion implements Serializable {
     @Override
     public String toString() {
         return "SurveyQuestion{" +
-            "id=" + getId() +
-            ", title='" + getTitle() + "'" +
-            "}";
+                "id=" + getId() +
+                ", title='" + getTitle() + "'" +
+                "}";
     }
 }

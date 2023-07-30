@@ -16,13 +16,13 @@
       "otherEntityName": "surveyQuestion",
       "relationshipName": "question",
       "relationshipSide": "right",
-      "relationshipType": "many-to-one"
+      "relationshipType": "many-to-many"
     },
     {
       "otherEntityName": "surveyResult",
       "relationshipName": "answer",
       "relationshipSide": "right",
-      "relationshipType": "one-to-many"
+      "relationshipType": "many-to-many"
     }
   ],
   "searchEngine": "no",

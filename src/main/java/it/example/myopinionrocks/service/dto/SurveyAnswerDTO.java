@@ -21,6 +21,4 @@ public class SurveyAnswerDTO implements Serializable {
 
     @NotNull
     private String title;
-
-    private Long resultCount;
 }

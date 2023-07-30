@@ -1,29 +1,32 @@
 entity Survey {
-	title String required,
+    title String required,
 }
 
 entity SurveyQuestion {
-	title String required,
+    title String required,
 }
 
 entity SurveyAnswer {
-	title String required,
+    title String required,
 }
 
 entity SurveyResult {
     datetime Instant required,
 }
 
-relationship OneToMany {
-	Survey to SurveyQuestion{survey},
+relationship ManyToMany {
+    Survey to SurveyQuestion{survey},
     SurveyQuestion to SurveyAnswer{question},
 }
 
 relationship ManyToOne {
-    SurveyResult to Survey{survey}, // not needed but handy for queries
-    SurveyResult to SurveyQuestion{question},
-  	SurveyResult to SurveyAnswer{answer},
     SurveyResult to User{user} with builtInEntity,
+    SurveyResult to Survey{survey},
+}
+
+relationship ManyToMany {
+    SurveyResult to SurveyQuestion{question},
+    SurveyResult to SurveyAnswer{answer},
 }
 
 // Set pagination options

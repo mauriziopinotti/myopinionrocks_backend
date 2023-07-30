@@ -3,7 +3,9 @@ package it.example.myopinionrocks.service;
 import it.example.myopinionrocks.domain.User;
 import it.example.myopinionrocks.service.dto.SurveyResultDTO;
 import it.example.myopinionrocks.service.dto.SurveyResultSubmitDTO;
-import org.springframework.lang.Nullable;
+import jakarta.annotation.Nullable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -44,6 +46,14 @@ public interface SurveyResultService {
     List<SurveyResultDTO> findAll();
 
     /**
+     * Get all the surveyResults with eager load of many-to-many relationships.
+     *
+     * @param pageable the pagination information.
+     * @return the list of entities.
+     */
+    Page<SurveyResultDTO> findAllWithEagerRelationships(Pageable pageable);
+
+    /**
      * Get the "id" surveyResult.
      *
      * @param id the id of the entity.
@@ -58,5 +68,5 @@ public interface SurveyResultService {
      */
     void delete(Long id);
 
-    void save(@Nullable User loggedUser, SurveyResultSubmitDTO surveyResultDTO);
+    SurveyResultDTO save(@Nullable User loggedUser, SurveyResultSubmitDTO surveyResultDTO);
 }

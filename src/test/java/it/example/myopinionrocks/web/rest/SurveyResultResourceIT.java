@@ -2,24 +2,33 @@ package it.example.myopinionrocks.web.rest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import it.example.myopinionrocks.IntegrationTest;
 import it.example.myopinionrocks.domain.SurveyResult;
 import it.example.myopinionrocks.repository.SurveyResultRepository;
+import it.example.myopinionrocks.service.SurveyResultService;
 import it.example.myopinionrocks.service.dto.SurveyResultDTO;
 import it.example.myopinionrocks.service.mapper.SurveyResultMapper;
 import jakarta.persistence.EntityManager;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -29,6 +38,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Integration tests for the {@link SurveyResultResource} REST controller.
  */
 @IntegrationTest
+@ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
 @WithMockUser
 class SurveyResultResourceIT {
@@ -45,8 +55,14 @@ class SurveyResultResourceIT {
     @Autowired
     private SurveyResultRepository surveyResultRepository;
 
+    @Mock
+    private SurveyResultRepository surveyResultRepositoryMock;
+
     @Autowired
     private SurveyResultMapper surveyResultMapper;
+
+    @Mock
+    private SurveyResultService surveyResultServiceMock;
 
     @Autowired
     private EntityManager em;
@@ -156,6 +172,23 @@ class SurveyResultResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(surveyResult.getId().intValue())))
             .andExpect(jsonPath("$.[*].datetime").value(hasItem(DEFAULT_DATETIME.toString())));
+    }
+
+    @SuppressWarnings({ "unchecked" })
+    void getAllSurveyResultsWithEagerRelationshipsIsEnabled() throws Exception {
+        when(surveyResultServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        restSurveyResultMockMvc.perform(get(ENTITY_API_URL + "?eagerload=true")).andExpect(status().isOk());
+
+        verify(surveyResultServiceMock, times(1)).findAllWithEagerRelationships(any());
+    }
+
+    @SuppressWarnings({ "unchecked" })
+    void getAllSurveyResultsWithEagerRelationshipsIsNotEnabled() throws Exception {
+        when(surveyResultServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        restSurveyResultMockMvc.perform(get(ENTITY_API_URL + "?eagerload=false")).andExpect(status().isOk());
+        verify(surveyResultRepositoryMock, times(1)).findAll(any(Pageable.class));
     }
 
     @Test

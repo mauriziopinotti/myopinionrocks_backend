@@ -14,14 +14,25 @@
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="survey_id" type="bigint">
-                <constraints nullable="true" />
-            </column>
             <column name="title" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
+    </changeSet>
+
+    <changeSet id="20230729091008-1-relations" author="jhipster">
+
+        <createTable tableName="rel_survey_question__survey_answer">
+            <column name="survey_answer_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="survey_question_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="survey_question_id, survey_answer_id" tableName="rel_survey_question__survey_answer"/>
     </changeSet>
 
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
@@ -34,15 +45,15 @@
           This can be customized by adding or removing 'faker' in the 'spring.liquibase.contexts'
           Spring Boot configuration key.
     -->
-<!--    <changeSet id="20230729091008-1-data" author="jhipster" context="faker">-->
-<!--        <loadData-->
-<!--                  file="config/liquibase/fake-data/survey_question.csv"-->
-<!--                  separator=";"-->
-<!--                  tableName="survey_question"-->
-<!--                  usePreparedStatements="true">-->
-<!--            <column name="id" type="numeric"/>-->
-<!--            <column name="title" type="string"/>-->
-<!--            &lt;!&ndash; jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here &ndash;&gt;-->
-<!--        </loadData>-->
-<!--    </changeSet>-->
+    <changeSet id="20230729091008-1-data" author="jhipster" context="faker">
+        <loadData
+                  file="config/liquibase/fake-data/survey_question.csv"
+                  separator=";"
+                  tableName="survey_question"
+                  usePreparedStatements="true">
+            <column name="id" type="numeric"/>
+            <column name="title" type="string"/>
+            <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
+        </loadData>
+    </changeSet>
 </databaseChangeLog>
