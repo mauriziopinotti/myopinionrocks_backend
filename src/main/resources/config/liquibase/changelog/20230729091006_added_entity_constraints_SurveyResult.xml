@@ -36,13 +36,6 @@
                                  referencedTableName="survey_question"
                                  />
 
-        <addForeignKeyConstraint baseColumnNames="survey_result_id"
-                                 baseTableName="rel_survey_result__survey_question_answer"
-                                 constraintName="fk_rel_survey_result__survey_answer__survey_result_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="survey_result"
-                                 />
-
         <addForeignKeyConstraint baseColumnNames="survey_answer_id"
                                  baseTableName="rel_survey_result__survey_question_answer"
                                  constraintName="fk_rel_survey_result__survey_answer__survey_answer_id"
