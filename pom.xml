@@ -8,8 +8,7 @@
     <artifactId>myopinionrocks</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>Myopinionrocks</name>
-    <description>Description for Myopinionrocks</description>
+    <name>MyOpinionRocks</name>
 
     <properties>
         <!--
