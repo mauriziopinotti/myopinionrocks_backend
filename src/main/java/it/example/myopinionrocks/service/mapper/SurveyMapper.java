@@ -1,11 +1,7 @@
 package it.example.myopinionrocks.service.mapper;
 
 import it.example.myopinionrocks.domain.Survey;
-import it.example.myopinionrocks.domain.SurveyQuestion;
 import it.example.myopinionrocks.service.dto.SurveyDTO;
-import it.example.myopinionrocks.service.dto.SurveyQuestionDTO;
-import java.util.Set;
-import java.util.stream.Collectors;
 import org.mapstruct.*;
 
 /**

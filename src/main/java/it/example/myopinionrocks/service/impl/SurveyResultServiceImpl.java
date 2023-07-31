@@ -1,11 +1,9 @@
 package it.example.myopinionrocks.service.impl;
 
 import it.example.myopinionrocks.domain.*;
-import it.example.myopinionrocks.repository.SurveyQuestionRepository;
 import it.example.myopinionrocks.repository.SurveyRepository;
 import it.example.myopinionrocks.repository.SurveyResultQuestionAnswerRepository;
 import it.example.myopinionrocks.repository.SurveyResultRepository;
-import it.example.myopinionrocks.service.SurveyQuestionService;
 import it.example.myopinionrocks.service.SurveyResultService;
 import it.example.myopinionrocks.service.dto.SurveyResultDTO;
 import it.example.myopinionrocks.service.dto.SurveyResultSubmitDTO;
@@ -16,9 +14,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import it.example.myopinionrocks.web.rest.errors.BadRequestAlertException;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import org.apache.commons.compress.utils.Sets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;

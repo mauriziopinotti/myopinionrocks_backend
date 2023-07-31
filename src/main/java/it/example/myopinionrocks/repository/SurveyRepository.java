@@ -5,8 +5,6 @@ import it.example.myopinionrocks.domain.Survey;
 import java.util.List;
 import java.util.Optional;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
