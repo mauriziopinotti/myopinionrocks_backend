@@ -6,7 +6,7 @@
 
     <groupId>it.example.myopinionrocks</groupId>
     <artifactId>myopinionrocks</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
     <name>MyOpinionRocks</name>
 
